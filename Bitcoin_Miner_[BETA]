@@ -1,0 +1,177 @@
+-- what functions are turned on/off:
+getgenv().autoSellBTC = false
+getgenv().autoSellS = false
+
+-- path of the game GetService
+local remotePath = game:GetService("ReplicatedStorage").Events;
+
+-- player's currentPostion position
+function getCurrentPlayerPOS()
+    local plyr = game.Players.LocalPlayer;
+    if plyr.Character then
+        return plyr.Character.HumanoidRootPart.Position;
+    end
+        return false;
+end
+
+local currentPostion = getCurrentPlayerPOS();
+if currentPostion then
+    print('Current postion is:', currentPostion)
+end
+
+-- ! ! AUTOSELL ! ! --
+    -- autoSellBTC
+    function BTC_autoSell()
+        spawn(function()
+            while getgenv().autoSellBTC == true do 
+                print('BTC sold!')
+                local args = {[1] = true}
+                remotePath.ExchangeMoney:FireServer(unpack(args))
+                wait(3)
+            end 
+        end) 
+    end
+
+    -- autoSellSolaris
+    function Solaris_autoSell()
+        spawn(function ()
+        while getgenv().autoSellS == true do
+            print('Solaris sold!')
+            local args = {[1] = false}
+            remotePath.ExchangeMoney:FireServer(unpack(args))
+            wait(3)
+        end
+        end)
+    end
+
+-- SHOPS  (teleprots) -------------------------------------------------------------------------
+-- Arctic
+function teleportTO(placeCFrame)
+    local plyr = game.Players.LocalPlayer;
+    if plyr.Character then
+         plyr.Character.HumanoidRootPart.CFrame = placeCFrame;
+    end
+end
+
+
+
+-- GUI --
+-- hud
+local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wall%20v3')))()
+
+-- name of the GUI
+local w = library:CreateWindow("Bitcoin miner [BETA]") -- Creates the window
+
+-- first tab
+local b = w:CreateFolder("BTC farm") -- Creates the folder(U will put here your buttons,etc)
+    b:Toggle("Auto Sell",function(bool)
+        getgenv().autoSellBTC = bool
+        print('Auto Sell of BTC is:', bool);
+        if bool then
+            BTC_autoSell();
+        end
+    end)
+
+-- second tab
+local c = w:CreateFolder("Solaris Farm")
+    c:Toggle("Auto Sell",function(bool)
+        getgenv().autoSellS = bool
+        print('Auto Sell of Solaris is', bool);
+        if bool then
+            Solaris_autoSell();
+        end
+    end)
+
+-- third tab
+    local d = w:CreateFolder("Teleports")
+    d:Button("Arctic Shop",function()
+        teleportTO(game:GetService("Workspace").Shops["Arctic Shop"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("Cave Shop",function()
+        teleportTO(game:GetService("Workspace").Shops.MineShop.Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("Chypset",function()
+        teleportTO(game:GetService("Workspace").Shops["Region_Chypset"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)d:Button("GenEX",function()
+        teleportTO(game:GetService("Workspace").Shops["Region_ElecGener"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("DanT",function()
+        teleportTO(game:GetService("Workspace").Shops["Region_DanT"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("Solaris Generators",function()
+        teleportTO(game:GetService("Workspace").Shops["Region_ElecGener2"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("Cave Shop 2",function()
+        teleportTO(game:GetService("Workspace").Shops["Region_ElecShopCV"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("Miner Toolz",function()
+        teleportTO(game:GetService("Workspace").Shops["Region_Mining_Device"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("Optix",function()
+        teleportTO(game:GetService("Workspace").Shops["Region_Optix"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("Prism Works",function()
+        teleportTO(game:GetService("Workspace").Shops["Region_PrismShop"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("Solaris Electronics",function()
+        teleportTO(game:GetService("Workspace").Shops["Region_SollarisShop"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("Tables & More",function()
+        teleportTO(game:GetService("Workspace").Shops["Region_Table"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("Flux Cards Inc.",function()
+        teleportTO(game:GetService("Workspace").Shops["Region_fluxShop"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("Normal Shop",function()
+        teleportTO(game:GetService("Workspace").Shops["Region_shop"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("Xeno",function()
+        teleportTO(game:GetService("Workspace").Shops.XenoShop.Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("HSV",function()
+        teleportTO(game:GetService("Workspace").Shops["Region_Light"].Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("GenEX",function()
+        teleportTO(game:GetService("Workspace").Shops.GenEX.Part.CFrame)
+        print("Teleported!")
+    end)
+    d:Button("Hive Shop",function()
+        teleportTO(game:GetService("Workspace").Shops["Hive Shop"].CFrame)
+        print("Teleported!")
+    end)
+    d:Button("ALIEN SHOP",function()
+        teleportTO(game:GetService("Workspace").Shops.AlienShop1.Trigger.ShopTrig.CFrame)
+        print("Teleported!")
+    end)
+-- Misc tab
+    local e = w:CreateFolder("Misc")
+        e:Slider("Walk Speed",{
+            min = 10; -- min value of the slider
+            max = 200; -- max value of the slider
+            precise = true; -- max 2 decimals
+        },function(value)
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+            print(value)
+        end)  
+    
+        e:Button("Current Positon",function(getCurrentPlayerPOS)
+            print('Current Position is:', currentPostion)
+        end)
+
+         e:DestroyGui()
